@@ -25,9 +25,12 @@ public class PatientService {
 
     @Transactional
     public Patient create(PatientInputDTO dto){
-       var address = addressRepository.save(dto.getAddress());
         Patient patient = new Patient(dto);
-        patient.setAddress(address);
+        if(dto.getAddress() != null){
+            var address = addressRepository.save(dto.getAddress());
+            patient.setAddress(address);
+        }
+       
         var passwordEncrypted = new BCryptPasswordEncoder().encode(dto.getPassword());
         patient.setPassword(passwordEncrypted);
         Patient patientCreated = repository.save(patient);
