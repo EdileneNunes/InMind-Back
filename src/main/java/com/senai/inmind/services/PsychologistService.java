@@ -25,9 +25,11 @@ public class PsychologistService {
 
     @Transactional
     public Psychologist create(PsychologistInputDTO dto) {
-        var address = addressRepository.save(dto.getAddress());
         Psychologist psychologist = new Psychologist(dto);
-        psychologist.setAddress(address);
+        if(dto.getAddress() != null){
+            var address = addressRepository.save(dto.getAddress());
+            psychologist.setAddress(address);
+        }
         var passwordEncrypted = new BCryptPasswordEncoder().encode(dto.getPassword());
         psychologist.setPassword(passwordEncrypted);
         Psychologist psychologistCreated = repository.save(psychologist);
@@ -56,6 +58,7 @@ public class PsychologistService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
 
     
     //Testes de Sistema, solicitado pelo professor Marcos :D
