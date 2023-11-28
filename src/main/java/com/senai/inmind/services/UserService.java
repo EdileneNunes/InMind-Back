@@ -89,9 +89,16 @@ public class UserService implements UserDetailsService{
     }
 
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = repository.findByUsername(username);
+        if(user != null){
+            return org.springframework.security.core.userdetails.User.builder()
+                .password(user.getPassword())
+                .username(user.getUsername())
+            .build();
+        }else{
+            throw new UsernameNotFoundException("");
+        }
     }
 
 

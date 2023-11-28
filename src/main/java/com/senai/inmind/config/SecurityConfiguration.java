@@ -51,7 +51,8 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(requests -> 
                     requests
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/psychologists").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/patients").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/refresh").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger**").permitAll()

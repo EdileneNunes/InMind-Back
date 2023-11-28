@@ -17,6 +17,11 @@ public class Psychologist extends User{
     public Psychologist(PsychologistInputDTO dto){
         this.crp = dto.getCrp();
         this.cnpj = dto.getCnpj();
+        super.username = dto.getUsername();
+        super.email = dto.getEmail();
+        super.password = dto.getPassword();
+       // super.picture = dto.getPicture();
+        super.address = dto.getAddress();
     }
 
     @Column(length = 8)

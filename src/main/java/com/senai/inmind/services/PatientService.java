@@ -3,12 +3,14 @@ package com.senai.inmind.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.senai.inmind.dtos.PatientInputDTO;
 import com.senai.inmind.entities.Patient;
+import com.senai.inmind.repositories.AddressRepository;
 import com.senai.inmind.repositories.PatientRepository;
 
 @Service
@@ -18,9 +20,16 @@ public class PatientService {
     @Autowired
     private PatientRepository repository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
     @Transactional
     public Patient create(PatientInputDTO dto){
+       var address = addressRepository.save(dto.getAddress());
         Patient patient = new Patient(dto);
+        patient.setAddress(address);
+        var passwordEncrypted = new BCryptPasswordEncoder().encode(dto.getPassword());
+        patient.setPassword(passwordEncrypted);
         Patient patientCreated = repository.save(patient);
         return patientCreated;
 

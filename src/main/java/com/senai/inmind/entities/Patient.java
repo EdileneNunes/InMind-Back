@@ -19,6 +19,11 @@ public class Patient extends User{
     public Patient(PatientInputDTO dto){
         this.cpf = dto.getCpf();
         this.bornDate = dto.getBornDate();
+        super.username = dto.getUsername();
+        super.email = dto.getEmail();
+        super.password = dto.getPassword();
+       // super.picture = dto.getPicture();
+        super.address = dto.getAddress();
     }
 
     @Column(length = 11)

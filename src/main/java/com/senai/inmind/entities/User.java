@@ -40,21 +40,24 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String username;
+    protected Long id;
+    protected String username;
     @Column(unique = true)
-    private String email;
+    protected String email;
     @Column(nullable = false)
-    private String password;
-    private FileInfo picture;
+    protected String password;
+    protected FileInfo picture;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    protected Role role;
     @OneToOne(optional = true)
-    private Address address;
+    protected Address address;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == null){
+            return null;
+        }
         return List.of(new SimpleGrantedAuthority("ROLE_"+this.role.name()));
     }
 
@@ -76,12 +79,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public String getUsername() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
     }
 
 }

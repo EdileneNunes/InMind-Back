@@ -3,12 +3,14 @@ package com.senai.inmind.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.senai.inmind.dtos.PsychologistInputDTO;
 import com.senai.inmind.entities.Psychologist;
+import com.senai.inmind.repositories.AddressRepository;
 import com.senai.inmind.repositories.PsychologistRepository;
 
 @Service
@@ -17,10 +19,17 @@ public class PsychologistService {
 
     @Autowired
     private PsychologistRepository repository;
+    
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Transactional
     public Psychologist create(PsychologistInputDTO dto) {
+        var address = addressRepository.save(dto.getAddress());
         Psychologist psychologist = new Psychologist(dto);
+        psychologist.setAddress(address);
+        var passwordEncrypted = new BCryptPasswordEncoder().encode(dto.getPassword());
+        psychologist.setPassword(passwordEncrypted);
         Psychologist psychologistCreated = repository.save(psychologist);
         return psychologistCreated;
     }
