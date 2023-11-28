@@ -25,6 +25,7 @@ public class RefreshTokenService {
     @Autowired
     private UserRepository userRepository;
 
+    
     public RefreshToken createRefreshToken(UserDetails userDetails, String token){
         
         RefreshToken refreshToken = new RefreshToken();
